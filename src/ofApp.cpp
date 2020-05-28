@@ -1,8 +1,12 @@
 #include "ofApp.h"
 
+//Question: Where would be a good place to store global variables?
+int windowWidth = 800;
+int windowHeight = 800;
 //--------------------------------------------------------------
 void ofApp::setup(){
-
+    ofSetWindowShape(windowWidth, windowHeight);
+    ofSetBackgroundColor(238, 234, 233);
 }
 
 //--------------------------------------------------------------
@@ -12,7 +16,20 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-
+    // Draw square of horizontal lines:
+    // QUESTION: would it be possible to utilize ofDrawGrid to draw horizontal lines?
+    ofSetColor(0); // set color of lines to black
+    // QUESTION: Is there a way to dynamically get window WxH to dynamically set margin?
+    int margin = 100;
+    for (int i = 0; i < 20; i++) {
+//      QUESTION: Is there a way to see the coordinate grid before drawing lines?
+        int newYCoordinate = margin + (((windowHeight - (margin*2)) / 20) * i); // evenly distribute lines (vertically) within margin
+        ofDrawLine(
+                   margin,
+                   newYCoordinate,
+                   windowHeight - margin, // set uniform line length
+                   newYCoordinate);
+    }
 }
 
 //--------------------------------------------------------------
