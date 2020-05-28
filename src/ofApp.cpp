@@ -51,18 +51,66 @@ void ofApp::draw(){
 //    * starting & ending points vary but when start is to the left, so is the end -- makes a subtle wave effect
     
     // QUESTION: would it be possible to utilize ofDrawGrid to draw horizontal lines?
-    ofSetColor(0); // set color of lines to black
+    ofSetColor(0x000000, 128); // set color of lines to slightly opaque black to emulate pen tracing over
     // QUESTION: Is there a way to dynamically get window WxH to dynamically set margin?
     int margin = 100;
-    for (int i = 0; i < 20; i++) {
+    for (int i=0; i < 20; i++) {
 //      QUESTION: Is there a way to see the coordinate grid before drawing lines?
-        int lineWidth = windowWidth - randomLengthArr[i]; // add slight variation to width
+        int lineWidth = (windowWidth - randomLengthArr[i]); // add slight variation to width
+        int lineEnd = lineWidth - (margin - randomStartArr[i]); // make line ending point correlated to starting
         int newYCoordinate = margin + (((windowHeight - (margin*2)) / 20) * i); // evenly distribute lines (vertically) within margin
-        ofDrawLine(
-                   margin + randomStartArr[i],
-                   newYCoordinate,
-                   lineWidth - (margin - randomStartArr[i]), // note: ofRandomWidth() animates random widths
-                   newYCoordinate); // y coordinate remains the same bc line is straight (ofRandomHeight is fun!)
+        for (int j=0; j < 6; j++) {
+//            TODO: replace this by using noise to draw line to emulate shaky hand
+            ofSetLineWidth(randomGap[j] * 0.2); // slightly vary line width to emulate hand writing
+
+            // HORIZONTAL LINE GAPS (INTERRUPTIONS)
+            // there are five gaps in vera's work so there's a 25% chance that a line will have a small gap
+            if (randomGapArr[i] > 6.5) {
+
+                // if this is our 1/5 line where we create gap, then draw two slightly separate lines
+                int firstLineEnd = randomGapLength[i];
+//                TODO: Break ofDrawLine into reusable function
+//                TODO: Add more variable lengths, to multiply pen stroke effect
+                ofDrawLine(
+                           margin + randomStartArr[i] + j,
+                           newYCoordinate,
+                           firstLineEnd - j, // note: ofRandomWidth() animates random widths
+                           newYCoordinate); // y coordinate remains the same bc line is straight (ofRandomHeight is fun!)
+
+                ofDrawLine(
+                           firstLineEnd + (randomGap[i]), // variable gap length
+                           newYCoordinate,
+                           lineEnd + (j *6), // note: ofRandomWidth() animates random widths
+                           newYCoordinate); // y coordinate remains the same bc line is straight (ofRandomHeight is fun!)
+            } else {
+                ofDrawLine(
+                          (margin + randomStartArr[i]),
+                          newYCoordinate,
+                          lineEnd - (j * 6), // note: ofRandomWidth() animates random widths
+                          newYCoordinate); // y coordinate remains the same bc line is straight (ofRandomHeight is fun!)
+            }
+        }
+        
+        
+//        SLANTED line interruptions:
+//        NOTE: all of her slopes are positive and over 90 degrees.
+        ofSetColor(0x000000); // set color of lines to slightly opaque black to emulate pen tracing over
+        ofSetLineWidth(2); // slightly vary line width to emulate hand writing
+
+        for (int k = 0; k < 40; k ++) {
+            float centerX = ramdomInterruptionStartArr[k];
+            float centerY = ramdomInterruptionHeightArr[k];
+          
+            float slopeX = randomSlopeArr2[k];
+            float slopeY = randomSlopeArr[k] + 10;
+
+//            RISE OVER RUN :) 
+            ofDrawLine(centerX + slopeX,
+                       centerY - slopeY,
+                       centerX,
+                       centerY
+                       );
+        };
     }
 }
 
