@@ -1,9 +1,10 @@
 #include "ofApp.h"
-
+//Question: What do you typically gitignore on an openframeworks project?
 //Question: Where would be a good place to store global variables?
 int windowWidth = 800;
 int windowHeight = 800;
 vector<int> randomStartArr;
+vector<int> randomLengthArr;
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -12,6 +13,7 @@ void ofApp::setup(){
     for (int i = 0; i < 20; i++) {
 //        QUESTION: what's the difference b/w ofRandom and ofNoise
         randomStartArr.push_back(ofRandom(-50, 50));
+        randomLengthArr.push_back(ofRandom(-20, 20));
     }
 }
 
@@ -24,19 +26,21 @@ void ofApp::update(){
 void ofApp::draw(){
     // Draw square of horizontal lines:
     // NOTE:
-//    * her lines aren't uniform length
+//    * her lines aren't uniform width
 //    * starting & ending points vary but when start is to the left, so is the end -- makes a subtle wave effect
+    
     // QUESTION: would it be possible to utilize ofDrawGrid to draw horizontal lines?
     ofSetColor(0); // set color of lines to black
     // QUESTION: Is there a way to dynamically get window WxH to dynamically set margin?
     int margin = 100;
     for (int i = 0; i < 20; i++) {
 //      QUESTION: Is there a way to see the coordinate grid before drawing lines?
+        int lineWidth = windowWidth - randomLengthArr[i]; // add slight variation to width
         int newYCoordinate = margin + (((windowHeight - (margin*2)) / 20) * i); // evenly distribute lines (vertically) within margin
         ofDrawLine(
                    margin + randomStartArr[i],
                    newYCoordinate,
-                   windowWidth - (margin - randomStartArr[i]), // note: ofRandomWidth() animates random widths
+                   lineWidth - (margin - randomStartArr[i]), // note: ofRandomWidth() animates random widths
                    newYCoordinate); // y coordinate remains the same bc line is straight (ofRandomHeight is fun!)
     }
 }
