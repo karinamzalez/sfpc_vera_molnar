@@ -5,6 +5,13 @@ int windowWidth = 800;
 int windowHeight = 800;
 vector<int> randomStartArr;
 vector<int> randomLengthArr;
+vector<int> randomGapArr;
+vector<int> randomGap;
+vector<int> randomGapLength;
+vector<int> randomSlopeArr;
+vector<int> randomSlopeArr2;
+vector<int> ramdomInterruptionStartArr;
+vector<int> ramdomInterruptionHeightArr;
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -14,7 +21,21 @@ void ofApp::setup(){
 //        QUESTION: what's the difference b/w ofRandom and ofNoise
         randomStartArr.push_back(ofRandom(-50, 50));
         randomLengthArr.push_back(ofRandom(-20, 20));
+//        QUESTION: How to get random integer value instead of percentage?
+        randomGapArr.push_back(ofRandom(1, 10));
+        randomGap.push_back(ofRandom(2, 15));
+        randomGapLength.push_back(ofRandom(10, 600));
     }
+    
+//    40 because there are more slanted lines so we need more variations
+    for (int j=0; j < 40; j++) {
+        randomSlopeArr.push_back(ofRandom(10, 40));
+        randomSlopeArr2.push_back(ofRandom(20, 150));
+        ramdomInterruptionStartArr.push_back(ofRandom(100, 700));
+        ramdomInterruptionHeightArr.push_back(ofRandom(100, 600));
+    }
+    
+    
 }
 
 //--------------------------------------------------------------
